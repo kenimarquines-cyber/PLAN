@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
+
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -161,13 +163,51 @@ body{
     font-size:14px;
     cursor:pointer;
 }
+
+.config-menu {
+    display: none; 
+    position: absolute;
+    top: 70px; /* Justo debajo del engranaje */
+    left: 20px;
+    background: #333; /* Color oscuro como el selector */
+    border-radius: 10px;
+    padding: 10px;
+    width: 150px;
+    z-index: 100;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+}
+
+/* Mostrar menú cuando tenga la clase 'show' */
+.config-menu.show {
+    display: block;
+}
+
+.config-option {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #555;
+}
+
+.config-option:last-child {
+    border-bottom: none;
+}
 </style>
 </head>
 
 <body>
 
+    <div class="config-menu" id="configMenu">
+        <a href="#" class="config-option">RESERVAS</a>
+        <a href="#" class="config-option">CERRAR SESIÓN</a>
+    </div>
+
 <div class="phone"> <a href="#" class="top-icon left"><i class="fa-solid fa-gear"></i></a>
     <a href="#" class="top-icon right"><i class="fa-solid fa-bell"></i></a>
+
+    <a href="#" class="top-icon left" onclick="toggleMenu()"><i class="fa-solid fa-gear"></i></a>
 
     <div class="title">PERFIL</div>
 
@@ -206,6 +246,13 @@ body{
         <input type="text" readonly>
         <i class="fa-solid fa-pencil"></i>
     </div>
+
+    <script>
+    function toggleMenu() {
+        var menu = document.getElementById("configMenu");
+        menu.classList.toggle("show");
+    }
+</script>
 
 </div> </body>
 
