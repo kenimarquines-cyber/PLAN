@@ -27,7 +27,7 @@
         .phone {
             width: 390px;
             height: 844px;
-            background-image: url(fondo.png); /* Asegurate que la imagen exista */
+            background-image: url(fondo.png); 
             background-size: cover;
             background-position: center;
             border-radius: 0px;
@@ -36,6 +36,34 @@
             overflow: hidden;
         }
 
+        /* Estilos Menús Flotantes */
+        .config-menu, .notifications-menu { 
+            display: none; 
+            position: absolute; 
+            top: 70px; 
+            background: #333; 
+            border-radius: 10px; 
+            padding: 10px; 
+            z-index: 100; 
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.5); 
+            border: 1px solid #444;
+        }
+
+        .config-menu { left: 20px; width: 150px; }
+        .notifications-menu { right: 20px; width: 200px; padding: 15px; }
+
+        .config-menu.show, .notifications-menu.show { display: block; }
+
+        .config-option { display: block; color: white; text-decoration: none; padding: 10px; font-size: 14px; border-bottom: 1px solid #555; }
+        .config-option:last-child { border-bottom: none; }
+
+        .notification-item {
+            font-size: 13px;
+            color: #bbb;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
         /* Iconos superiores */
         .top-icon {
             position: absolute;
@@ -68,12 +96,6 @@
         .field input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #555; padding: 10px 35px 8px 0; color: white; font-size: 16px; outline: none; }
         .field i { position: absolute; right: 0; bottom: 12px; color: #d4af37; font-size: 14px; cursor: pointer; }
 
-        /* Menú Flotante */
-        .config-menu { display: none; position: absolute; top: 70px; left: 20px; background: #333; border-radius: 10px; padding: 10px; width: 150px; z-index: 100; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); }
-        .config-menu.show { display: block; }
-        .config-option { display: block; color: white; text-decoration: none; padding: 10px; font-size: 14px; border-bottom: 1px solid #555; }
-        .config-option:last-child { border-bottom: none; }
-
         /* Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background-color: #d4af37; padding: 20px; border-radius: 15px; width: 80%; max-width: 350px; text-align: center; color: black; position: relative; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); }
@@ -88,12 +110,16 @@
 <body>
 
     <div class="phone">
-        <a href="#" class="top-icon left" onclick="toggleMenu()"><i class="fa-solid fa-gear"></i></a>
-        <a href="#" class="top-icon right"><i class="fa-solid fa-bell"></i></a>
+        <a href="#" class="top-icon left" onclick="toggleConfig()"><i class="fa-solid fa-gear"></i></a>
+        <a href="#" class="top-icon right" onclick="toggleNotif()"><i class="fa-solid fa-bell"></i></a>
 
         <div class="config-menu" id="configMenu">
             <a href="#" class="config-option">RESERVAS</a>
             <a href="#" class="config-option">CERRAR SESIÓN</a>
+        </div>
+
+        <div class="notifications-menu" id="notificationsMenu">
+            <div class="notification-item">No tienes notificaciones por el momento</div>
         </div>
 
         <div class="title">PERFIL</div>
@@ -112,25 +138,25 @@
 
         <div class="field">
             <label>NOMBRE</label>
-            <input type="text" readonly value="">
+            <input type="text" readonly value="Juan">
             <i class="fa-solid fa-pencil" onclick="openModal()"></i>
         </div>
 
         <div class="field">
             <label>APELLIDO</label>
-            <input type="text" readonly value="">
+            <input type="text" readonly value="Pérez">
             <i class="fa-solid fa-pencil" onclick="openModal()"></i>
         </div>
 
         <div class="field">
             <label>CORREO</label>
-            <input type="email" readonly value="">
+            <input type="email" readonly value="juan@ejemplo.com">
             <i class="fa-solid fa-pencil" onclick="openModal()"></i>
         </div>
 
         <div class="field">
             <label>TELÉFONO</label>
-            <input type="text" readonly value="">
+            <input type="text" readonly value="123456789">
             <i class="fa-solid fa-pencil" onclick="openModal()"></i>
         </div>
     </div>
@@ -141,17 +167,27 @@
                 <h3>EDITAR</h3>
                 <span class="close-btn" onclick="closeModal()">&times;</span>
             </div>
-            <p class="modal-instruction">INGRESE SU NUEVO NOMBRE DE USUARIO</p>
+            <p class="modal-instruction">INGRESE EL NUEVO VALOR</p>
             <input type="text" placeholder="Nuevo valor..." class="modal-input">
             <button class="save-btn" onclick="closeModal()">GUARDAR</button>
         </div>
     </div>
 
     <script>
-        // Función menú configuración
-        function toggleMenu() {
+        // Función para menú configuración
+        function toggleConfig() {
             var menu = document.getElementById("configMenu");
+            var notif = document.getElementById("notificationsMenu");
+            notif.classList.remove("show"); // Cerrar el otro si está abierto
             menu.classList.toggle("show");
+        }
+
+        // Función para menú notificaciones
+        function toggleNotif() {
+            var notif = document.getElementById("notificationsMenu");
+            var menu = document.getElementById("configMenu");
+            menu.classList.remove("show"); // Cerrar el otro si está abierto
+            notif.classList.toggle("show");
         }
 
         // Funciones modal editar
@@ -163,11 +199,18 @@
             document.getElementById("editModal").classList.remove("show");
         }
 
-        // Cerrar el modal si se hace clic fuera de la caja blanca
+        // Cerrar todo al hacer clic fuera
         window.onclick = function(event) {
             var modal = document.getElementById("editModal");
-            if (event.target == modal) {
-                closeModal();
+            var config = document.getElementById("configMenu");
+            var notif = document.getElementById("notificationsMenu");
+
+            if (event.target == modal) { closeModal(); }
+            
+            // Si el clic no es en los iconos ni en los menús, cerrar menús
+            if (!event.target.closest('.top-icon') && !event.target.closest('.config-menu') && !event.target.closest('.notifications-menu')) {
+                config.classList.remove("show");
+                notif.classList.remove("show");
             }
         }
     </script>
