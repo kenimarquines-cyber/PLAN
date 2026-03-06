@@ -6,9 +6,7 @@
     <title>Perfil</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* =========================================
-           1. ESTILOS BASE Y TELÉFONO
-           ========================================= */
+        /* Estilos existentes se mantienen igual */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
         body {
@@ -23,15 +21,17 @@
 
         .phone {
             width: 390px;
-            min-height: 844px;
-            height: auto;
+            min-height: 800px;
+            
             background-image: url(fondo.png);
             background-size: cover;
             background-position: center;
             border-radius: 0px;
-            padding: 80px 25px 40px;
+            padding: 100px 25px 40px;
             position: relative;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
         }
 
         .top-icon {
@@ -54,7 +54,7 @@
             display: flex; justify-content: center; align-items: center; 
         }
 
-        .profile-img-preview { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; overflow: hidden; }
+        .profile-img-preview { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; overflow: hidden; display: flex; justify-content: center; align-items: center;}
         .profile-img-preview i { font-size: 80px; color: #ccc; }
 
         .edit-photo-pencil { 
@@ -69,69 +69,126 @@
         .user-type span { flex: 1; text-align: center; padding: 12px; font-size: 15px; opacity: 0.5; }
         .user-type .active { background: #ddd; color: black; opacity: 1; font-weight: 600; }
 
+        /* Campos de texto optimizados */
         .field { margin: 28px 0; position: relative; }
-        .field label { font-size: 14px; color: #ddd; }
-        .field input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #555; padding: 10px 35px 8px 0; color: white; font-size: 16px; outline: none; }
-        .field i { position: absolute; right: 0; bottom: 12px; color: #d4af37; font-size: 14px; cursor: pointer; }
+        .field label { font-size: 12px; color: #d4af37; font-weight: bold; letter-spacing: 1px;}
+        .field input { 
+            width: 100%; 
+            background: transparent; 
+            border: none; 
+            border-bottom: 2px solid #555; 
+            padding: 10px 0 8px 0; 
+            color: white; 
+            font-size: 16px; 
+            outline: none; 
+            transition: border-color 0.3s;
+        }
+        .field input:focus { border-bottom-color: #d4af37; }
+
+        /* Estilos para el Modal de Notificaciones */
+#notificationModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.notification-content {
+    background: linear-gradient(145deg, #1a1a1a, #000);
+    border: 1px solid #d4af37;
+    padding: 40px 30px;
+    border-radius: 30px;
+    width: 85%;
+    max-width: 350px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.notif-icon {
+    font-size: 50px;
+    color: #d4af37;
+    margin-bottom: 20px;
+}
+
+.notification-content h3 {
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.notification-content p {
+    color: #bbb;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.notif-btn {
+    background: #d4af37;
+    color: black;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.close-notif {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #555;
+}
+
+        /* Nuevo Botón Guardar */
+        .save-all-btn {
+            background-color: #d4af37;
+            color: black;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 40px;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .save-all-btn:active { transform: scale(0.98); background-color: #bfa030; }
 
         .config-menu { display: none; position: absolute; top: 70px; left: 20px; background: #333; border-radius: 10px; padding: 10px; width: 150px; z-index: 100; }
         .config-menu.show { display: block; }
         .config-option { display: block; color: white; text-decoration: none; padding: 10px; font-size: 14px; border-bottom: 1px solid #555; }
 
-        /* =========================================
-           2. ESTILOS MODALES
-           ========================================= */
-        .modal-overlay { 
-            display: none; position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); 
-            z-index: 1000; justify-content: center; align-items: center; 
-        }
+        /* Modales */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-overlay.show { display: flex; }
-
-        .modal-content {
-            background-color: rgba(255, 215, 0, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 40px 20px;
-            border-radius: 60px;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        .modal-content-small { width: 85%; max-width: 350px; }
-        .modal-content-large { width: 90%; max-width: 380px; max-height: 90vh; overflow-y: auto; }
-
+        .modal-content { background-color: rgba(255, 215, 0, 0.6); backdrop-filter: blur(8px); padding: 40px 20px; border-radius: 60px; text-align: center; color: white; position: relative; width: 90%; max-width: 380px; }
         .close-btn { position: absolute; top: 15px; right: 25px; font-size: 24px; cursor: pointer; color: white; }
-        .modal-instruction { font-weight: bold; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; }
-
-        .modal-input { 
-            width: 90%; padding: 12px; border-radius: 25px; border: none; 
-            margin-bottom: 20px; outline: none; text-align: center; font-weight: 600;
-        }
-        
-        .save-btn { 
-            background-color: black; color: white; border: none; 
-            padding: 10px 30px; border-radius: 20px; cursor: pointer; 
-            font-weight: bold; margin-top: 10px;
-        }
-
-        .photo-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; padding: 10px 0 20px; justify-items: center;
-        }
-
-        .profile-option {
-            width: 85px; height: 85px; border-radius: 15px;
-            background-color: #333; cursor: pointer; overflow: hidden;
-            border: 4px solid transparent; transition: 0.2s;
-        }
-
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 20px 0; }
+        .profile-option { width: 80px; height: 80px; border-radius: 15px; background-color: #333; cursor: pointer; overflow: hidden; border: 4px solid transparent; }
         .profile-option img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-option.selected { border-color: #00FF00; transform: scale(1.05); }
-
+        .profile-option.selected { border-color: #00FF00; }
+        .save-btn { background-color: black; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -140,13 +197,14 @@
         <a href="#" class="top-icon left" onclick="toggleMenu()"><i class="fa-solid fa-gear"></i></a>
         <a href="#" class="top-icon right" onclick="openNotificationModal()"><i class="fa-solid fa-bell"></i></a>
 
+        <a href="#" class="top-icon right" onclick="openNotificationModal()">
+    <i class="fa-solid fa-bell"></i>
+</a>
 
         <div class="config-menu" id="configMenu">
-    <a href="https://duberandresurbano-tech.github.io/Proyecto-html/" class="config-option">RESERVAS</a>
-    <a href="#" class="config-option">CERRAR SESIÓN</a>
-</div>
-
-
+            <a href="https://duberandresurbano-tech.github.io/Proyecto-html/" class="config-option">RESERVAS</a>
+            <a href="#" class="config-option">CERRAR SESIÓN</a>
+        </div>
 
         <div class="title">PERFIL</div>
 
@@ -166,88 +224,101 @@
 
         <div class="field">
             <label>NOMBRE</label>
-            <input type="text" id="input-nombre" readonly value="">
-            <i class="fa-solid fa-pencil" onclick="openTextModal('NOMBRE', 'input-nombre')"></i>
+            <input type="text" id="input-nombre" placeholder="Escribe tu nombre">
         </div>
 
         <div class="field">
             <label>APELLIDO</label>
-            <input type="text" id="input-apellido" readonly value="">
-            <i class="fa-solid fa-pencil" onclick="openTextModal('APELLIDO', 'input-apellido')"></i>
+            <input type="text" id="input-apellido" placeholder="Escribe tu apellido">
         </div>
 
         <div class="field">
             <label>CORREO</label>
-            <input type="email" id="input-correo" readonly value="">
-            <i class="fa-solid fa-pencil" onclick="openTextModal('CORREO ELECTRÓNICO', 'input-correo')"></i>
+            <input type="email" id="input-correo" placeholder="ejemplo@correo.com">
         </div>
 
         <div class="field">
             <label>TELÉFONO</label>
-            <input type="text" id="input-telefono" readonly value="">
-            <i class="fa-solid fa-pencil" onclick="openTextModal('TELÉFONO', 'input-telefono')"></i>
+            <input type="text" id="input-telefono" placeholder="Tu número">
         </div>
-    </div>
 
-    <div class="modal-overlay" id="textEditModal">
-        <div class="modal-content modal-content-small">
-            <span class="close-btn" onclick="closeTextModal()">&times;</span>
-            <p class="modal-instruction">INGRESE SU NUEVO DATO</p>
-            <input type="text" class="modal-input" id="textValueModal">
-            <button class="save-btn" onclick="saveTextChange()">GUARDAR</button>
-        </div>
+        <button class="save-all-btn" onclick="saveAllData()">Guardar Cambios</button>
     </div>
 
     <div class="modal-overlay" id="photoEditModal">
-        <div class="modal-content modal-content-large">
+        <div class="modal-content">
             <span class="close-btn" onclick="closePhotoModal()">&times;</span>
-            <p class="modal-instruction">ELEGIR FOTO DE PERFIL</p>
+            <p style="font-weight: bold;">ELEGIR FOTO DE PERFIL</p>
             <div class="photo-grid">
-                <div class="profile-option selected" data-photo-src="a.jpg" onclick="selectPhoto(this)"><img src="a.jpg"></div>
+                <div class="profile-option" data-photo-src="a.jpg" onclick="selectPhoto(this)"><img src="a.jpg"></div>
                 <div class="profile-option" data-photo-src="b.jpg" onclick="selectPhoto(this)"><img src="b.jpg"></div>
                 <div class="profile-option" data-photo-src="c.jpg" onclick="selectPhoto(this)"><img src="c.jpg"></div>
-                <div class="profile-option" data-photo-src="d.jpg" onclick="selectPhoto(this)"><img src="d.jpg"></div>
-                <div class="profile-option" data-photo-src="e.jpg" onclick="selectPhoto(this)"><img src="e.jpg"></div>
-                <div class="profile-option" data-photo-src="f.jpg" onclick="selectPhoto(this)"><img src="f.jpg"></div>
-                <div class="profile-option" data-photo-src="g.jpg" onclick="selectPhoto(this)"><img src="g.jpg"></div>
-                <div class="profile-option" data-photo-src="h.jpeg" onclick="selectPhoto(this)"><img src="h.jpeg"></div>
-                <div class="profile-option" data-photo-src="i.png" onclick="selectPhoto(this)"><img src="i.png"></div>
-            </div>
+                </div>
             <button class="save-btn" onclick="applyPhotoChange()">ACEPTAR</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="notificationModal">
-        <div class="modal-content modal-content-small">
-            <span class="close-btn" onclick="closeNotificationModal()">&times;</span>
-            <i class="fa-solid fa-bell" style="font-size: 40px; color: white; margin-bottom: 15px;"></i>
-            <p class="modal-instruction">NOTIFICACIONES</p>
-            <p style="margin-bottom: 20px;">Tienes 0 notificaciones</p>
-            <button class="save-btn" onclick="closeNotificationModal()">ENTENDIDO</button>
+    <div class="notification-content">
+        <span class="close-notif" onclick="closeNotificationModal()">&times;</span>
+        <div class="notif-icon">
+            <i class="fa-solid fa-bell-slash"></i>
         </div>
+        <h3>NOTIFICACIONES</h3>
+        <p>No tienes notificaciones pendientes por el momento.</p>
+        <button class="notif-btn" onclick="closeNotificationModal()">ENTENDIDO</button>
     </div>
+</div>
 
     <script>
+        // Al cargar la página, recuperar datos guardados
+        window.onload = function() {
+            if(localStorage.getItem('user_nombre')) document.getElementById('input-nombre').value = localStorage.getItem('user_nombre');
+            if(localStorage.getItem('user_apellido')) document.getElementById('input-apellido').value = localStorage.getItem('user_apellido');
+            if(localStorage.getItem('user_correo')) document.getElementById('input-correo').value = localStorage.getItem('user_correo');
+            if(localStorage.getItem('user_telefono')) document.getElementById('input-telefono').value = localStorage.getItem('user_telefono');
+            if(localStorage.getItem('user_photo')) {
+                document.getElementById('mainProfilePic').innerHTML = `<img src="${localStorage.getItem('user_photo')}" class="profile-img-preview">`;
+            }
+        };
+
+        function openNotificationModal() {
+    document.getElementById("notificationModal").style.display = "flex";
+}
+
+function closeNotificationModal() {
+    document.getElementById("notificationModal").style.display = "none";
+}
+
+// Opcional: Cerrar el modal si el usuario hace clic fuera de la cajita negra
+window.onclick = function(event) {
+    let modal = document.getElementById("notificationModal");
+    if (event.target == modal) {
+        closeNotificationModal();
+    }
+}
+
         function toggleMenu() {
             document.getElementById("configMenu").classList.toggle("show");
         }
 
-        // --- Lógica Textos ---
-        let currentTextFieldId = "";
-        function openTextModal(campo, id) {
-            currentTextFieldId = id;
-            document.querySelector("#textEditModal .modal-instruction").innerText = "INGRESE SU " + campo;
-            document.getElementById("textEditModal").classList.add("show");
-        }
-        function closeTextModal() { document.getElementById("textEditModal").classList.remove("show"); }
-        function saveTextChange() {
-            let val = document.getElementById("textValueModal").value;
-            if(val.trim()) document.getElementById(currentTextFieldId).value = val;
-            closeTextModal();
+        // Función para guardar todo en el LocalStorage
+        function saveAllData() {
+            const nombre = document.getElementById('input-nombre').value;
+            const apellido = document.getElementById('input-apellido').value;
+            const correo = document.getElementById('input-correo').value;
+            const telefono = document.getElementById('input-telefono').value;
+
+            localStorage.setItem('user_nombre', nombre);
+            localStorage.setItem('user_apellido', apellido);
+            localStorage.setItem('user_correo', correo);
+            localStorage.setItem('user_telefono', telefono);
+
+            alert("¡Datos guardados con éxito!");
         }
 
-        // --- Lógica Fotos ---
-        let selectedPhotoSrc = "a.jpg";
+        // Lógica de Foto (se mantiene simplificada)
+        let selectedPhotoSrc = "";
         function openPhotoModal() { document.getElementById("photoEditModal").classList.add("show"); }
         function closePhotoModal() { document.getElementById("photoEditModal").classList.remove("show"); }
         function selectPhoto(el) {
@@ -256,21 +327,11 @@
             selectedPhotoSrc = el.getAttribute("data-photo-src");
         }
         function applyPhotoChange() {
-            document.getElementById("mainProfilePic").innerHTML = `<img src="${selectedPhotoSrc}" class="profile-img-preview">`;
-            closePhotoModal();
-        }
-
-        // --- Lógica Notificaciones ---
-        function openNotificationModal() { document.getElementById("notificationModal").classList.add("show"); }
-        function closeNotificationModal() { document.getElementById("notificationModal").classList.remove("show"); }
-
-        // Cerrar al hacer clic fuera
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                closeTextModal();
-                closePhotoModal();
-                closeNotificationModal();
+            if(selectedPhotoSrc) {
+                document.getElementById("mainProfilePic").innerHTML = `<img src="${selectedPhotoSrc}" class="profile-img-preview">`;
+                localStorage.setItem('user_photo', selectedPhotoSrc);
             }
+            closePhotoModal();
         }
     </script>
 </body>
