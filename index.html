@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
+    <style> 
         /* Estilos existentes se mantienen igual */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
         body {
             background: #000000;
+    /* Agrega estas tres líneas */
+    background-image: url('fond.jpeg'); 
+    background-size: cover;       /* Hace que la imagen cubra toda la pantalla */
+    background-position: center;  /* Centra la imagen */
+    background-attachment: fixed; /* Evita que el fondo se mueva al hacer scroll */
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -19,26 +24,52 @@
             padding: 20px 0;
         }
 
-        .phone {
-            width: 390px;
-            min-height: 800px;
-            
-            background-image: url(fondo.png);
-            background-size: cover;
-            background-position: center;
-            border-radius: 0px;
-            padding: 100px 25px 40px;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        .field {
             display: flex;
             flex-direction: column;
+            gap: 10px; /* Espacio entre label e input */
+            width: 300px;
         }
+
+        .field label {
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 2px; /* Letras separadas estilo futurista */
+            font-size: 14px;
+            /* Neón sutil cian para el texto */
+            text-shadow: 0 0 5px #c300ff, 0 0 10px #00ffdd;
+        }
+
+        .field input::placeholder {
+            color: #00d9ff;
+            font-style: italic;
+        }
+
+        .field input:hover {
+            border-color: #1b56d4; /* Cambia borde a Cian */
+            /* Resplandor exterior Cian */
+            box-shadow: 
+                0 0 10px rgb(8, 247, 255),
+                inset 0 1px 1px rgb(255, 11, 255);
+        }
+
+        .field input:focus {
+            border-color: #bd00ff; /* Cambia borde a Morado */
+            background-color: #252545;
+
+            box-shadow: 
+                0 0 20px rgba(189, 0, 255, 0.8),  /* Neón Morado fuerte fuera */
+                0 0 40px rgba(189, 0, 255, 0.4),  /* Halo morado lejano */
+                inset 0 0 15px rgba(0, 255, 255, 0.5); /* Neón Cian dentro */
+        }
+
+
 
         .top-icon {
             position: absolute;
             top: 40px;
             font-size: 22px;
-            color: #d4af37;
+            color: #00fff2;
             text-decoration: none;
             z-index: 10;
         }
@@ -59,7 +90,7 @@
 
         .edit-photo-pencil { 
             position: absolute; right: 0px; bottom: 0px; 
-            background: #d4af37; width: 35px; height: 35px; 
+            background: #b700ff; width: 35px; height: 35px; 
             border-radius: 50%; display: flex; justify-content: center; 
             align-items: center; cursor: pointer; z-index: 5;
         }
@@ -71,7 +102,7 @@
 
         /* Campos de texto optimizados */
         .field { margin: 28px 0; position: relative; }
-        .field label { font-size: 12px; color: #d4af37; font-weight: bold; letter-spacing: 1px;}
+        .field label { font-size: 12px; color: #37d4c7; font-weight: bold; letter-spacing: 1px;}
         .field input { 
             width: 100%; 
             background: transparent; 
@@ -83,7 +114,7 @@
             outline: none; 
             transition: border-color 0.3s;
         }
-        .field input:focus { border-bottom-color: #d4af37; }
+        .field input:focus { border-bottom-color: #d4b737; }
 
         /* Estilos para el Modal de Notificaciones */
 #notificationModal {
@@ -102,7 +133,7 @@
 
 .notification-content {
     background: linear-gradient(145deg, #1a1a1a, #000);
-    border: 1px solid #d4af37;
+    border: 1px solid #d4c937;
     padding: 40px 30px;
     border-radius: 30px;
     width: 85%;
@@ -120,7 +151,7 @@
 
 .notif-icon {
     font-size: 50px;
-    color: #d4af37;
+    color: #d4b737;
     margin-bottom: 20px;
 }
 
@@ -138,8 +169,8 @@
 }
 
 .notif-btn {
-    background: #d4af37;
-    color: black;
+    background: #000000;
+    color: rgb(219, 178, 41);
     border: none;
     padding: 12px 30px;
     border-radius: 25px;
@@ -159,7 +190,7 @@
 
         /* Nuevo Botón Guardar */
         .save-all-btn {
-            background-color: #d4af37;
+            background-color: #e0bd21;
             color: black;
             border: none;
             padding: 15px;
@@ -182,13 +213,69 @@
         /* Modales */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-overlay.show { display: flex; }
-        .modal-content { background-color: rgba(255, 215, 0, 0.6); backdrop-filter: blur(8px); padding: 40px 20px; border-radius: 60px; text-align: center; color: white; position: relative; width: 90%; max-width: 380px; }
+        .modal-content { 
+    background-color: rgba(20, 40, 24, 0); /* Fondo más oscuro para que resalte el neón */
+    backdrop-filter: blur(12px); 
+    padding: 40px 20px; 
+    border-radius: 40px; 
+    text-align: center; 
+    color: white; 
+    position: relative; 
+    width: 90%; 
+    max-width: 380px; 
+    
+    /* --- EFECTO NEÓN MORADO --- */
+    border: 2px solid #bd00ff; 
+    box-shadow: 0 0 20px rgba(189, 0, 255, 0.6), 
+                inset 0 0 15px rgba(189, 0, 255, 0.4);
+}
         .close-btn { position: absolute; top: 15px; right: 25px; font-size: 24px; cursor: pointer; color: white; }
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 20px 0; }
-        .profile-option { width: 80px; height: 80px; border-radius: 15px; background-color: #333; cursor: pointer; overflow: hidden; border: 4px solid transparent; }
+        .profile-option { 
+    width: 80px; 
+    height: 80px; 
+    border-radius: 15px; 
+    background-color: #9191c9; 
+    cursor: pointer; 
+    overflow: hidden; 
+    border: 2px solid #665252; /* Borde normal apagado */
+    transition: all 0.3s ease;
+}
+
+/* Cuando se selecciona la foto (Cian Neón) */
+.profile-option.selected { 
+    border-color: #00ffff; 
+    transform: scale(1.05); /* Un pequeño aumento para dar volumen */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8),
+                inset 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
         .profile-option img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-option.selected { border-color: #00FF00; }
-        .save-btn { background-color: black; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .profile-option.selected { 
+    border-color: #00ff0d; 
+    transform: scale(1.05); /* Un pequeño aumento para dar volumen */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8),
+                inset 0 0 10px rgba(0, 255, 255, 0.5);
+}
+        .save-btn { 
+    background-color: #00ffff; /* Fondo cian */
+    color: rgb(255, 255, 255); 
+    border: none; 
+    padding: 12px 35px; 
+    border-radius: 25px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    text-transform: uppercase;
+    transition: 0.3s;
+    /* Resplandor base */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.save-btn:hover {
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    transform: translateY(-2px);
+}
     </style>
 </head>
 <body>
@@ -217,11 +304,7 @@
             </div>
         </div>
 
-        <div class="user-type">
-            <span>PERSONAL</span>
-            <span class="active">TRABAJADOR</span>
-        </div>
-
+        
         <div class="field">
             <label>NOMBRE</label>
             <input type="text" id="input-nombre" placeholder="Escribe tu nombre">
